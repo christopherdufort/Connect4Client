@@ -94,7 +94,7 @@ public class MainAppFX extends Application
             gridPane = (GridPane) ap.getChildren().get(1);
             label = (Label) ap.getChildren().get(2);
             
-            label.setText("Wrong move bud");
+            label.setVisible(false);
             
             
             // Put the Scene on Stage
@@ -153,6 +153,7 @@ public class MainAppFX extends Application
 	public void checkColumnValid(Node node) throws InterruptedException
     {
     	int c;
+    	int r;
     	
     	if(gridPane.getColumnIndex(node) == null)
     	{
@@ -164,30 +165,38 @@ public class MainAppFX extends Application
     		c = gridPane.getColumnIndex(node);
     	}
     	
-    	System.out.println(c);
-    	System.out.println(gridPane.getRowIndex(node));
+    	if(gridPane.getRowIndex(node) == null)
+    	{
+    		r = 0;
+    	}
     	
-        //TODO: fix this: get 'a' from appropriate place
+    	else
+    	{
+    		r = gridPane.getRowIndex(node);
+    	}
+    	
+    	System.out.println("Column: " + c);
+    	System.out.println("Row: " + r);
+    	
 
-        int i = validateSlottingPos(c);
+        int i = validateSlottingPos(c, r);
+        
+        System.out.println("Actual Result: " + i);
         
         if(i != -1)
         {
+        	board[r][c] = 1;
         	node.setStyle("-fx-background-color: red");
-        	//do logic to slot
-        	//Get the row: i
-        	//Get the column: c
-        	//TODO: Set the red or yellow checker depending on who puts it in: Can we set an image to a gridPane node?
-        	//Do this by retrieving the grid and setting background image to image of appropriate checker
+        	
+        	//TODO: Check for who is playing the move and change the code appropriately
+        	//TODO: maybe get background images set up instead of placing a color?
         }
         
         else
         {
-        	System.out.println("error");
-        	
         	//TODO: Display Error?
         	label.setVisible(true);
-        	label.setText("Wrong type move");
+        	label.setText("Illegal move");
         	label.setStyle("-fx-text-color: red");
         	
         	Timer timer  = new Timer();
@@ -207,14 +216,11 @@ public class MainAppFX extends Application
     }
     
     
-	public int validateSlottingPos(int c)
+	public int validateSlottingPos(int c, int r)
 	{
-		for(int i = 0; i < 7; i++)
+		if(board[r][c] == 0)
 		{
-			if(board[i][c] == 0)
-			{
-				return i;
-			}
+			return 1;
 		}
 		
 		return -1;
