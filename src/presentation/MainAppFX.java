@@ -17,6 +17,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Basic class for starting a JavaFX application
@@ -28,6 +30,8 @@ public class MainAppFX extends Application
     private Stage primaryStage;
     GridPane gridPane;
     Label label;
+    
+    int[][] board = new int[6][7];
 
     /**
      * Constructor
@@ -99,8 +103,6 @@ public class MainAppFX extends Application
             
             
             getNodeByRowColumnIndex();
-            //TODO: This code maybe needed to place onClickListeners in the columns, how do we retrieve the column "nodes" though?
-            //Source: http://stackoverflow.com/questions/24131618/javafx-how-to-create-a-clickable-area-around-node
             
             //TODO: 2. Get the position that was just changed and send it as a byte array into...something?
             //byte[] byteBuffer;
@@ -117,46 +119,57 @@ public class MainAppFX extends Application
         }
     }
     
-    //@SuppressWarnings("static-access")
 	public void getNodeByRowColumnIndex() 
     {          	
-    	//TODO: why children only has one node?
-    	//TODO: should we even be doing children? is there a getCells? or maybe spam hboxes in every cell and change that?
         ObservableList<Node> childrens = gridPane.getChildren();
-        System.out.println(childrens);
         
         for(Node node : childrens) 
         {
-        	System.out.println("loop");
-            //if(gridPane.getColumnIndex(node) != null) 
-            {
-            	System.out.println("system");
-                node.setOnMouseClicked
-        		(
-    				new EventHandler<MouseEvent>()
-    				{
-    			        @Override
-    			        public void handle(MouseEvent event) 
-    			        {
-    			        	//TODO: Event handling
-    			        	checkColumnValid(node);
-    			            node.setCursor(Cursor.HAND);
-    			        }
-    		    	}
-        		);
-            }
+            node.setOnMouseClicked
+    		(
+				new EventHandler<MouseEvent>()
+				{
+			        @Override
+			        public void handle(MouseEvent event) 
+			        {
+			        	try 
+			        	{
+							checkColumnValid(node);
+						} 
+			        	
+			        	catch (InterruptedException e) 
+			        	{
+							e.printStackTrace();
+						}
+			        	
+			            node.setCursor(Cursor.HAND);
+			        }
+		    	}
+    		);
         }
     }
     
-    public void checkColumnValid(Node node)
+	@SuppressWarnings("static-access")
+	public void checkColumnValid(Node node) throws InterruptedException
     {
-    	//TODO: NO HARDCODING
-        int c = 0;
+    	int c;
+    	
+    	if(gridPane.getColumnIndex(node) == null)
+    	{
+    		c = 0;
+    	}
+    	
+    	else
+    	{
+    		c = gridPane.getColumnIndex(node);
+    	}
+    	
+    	System.out.println(c);
+    	System.out.println(gridPane.getRowIndex(node));
+    	
         //TODO: fix this: get 'a' from appropriate place
-        int[][] a = new int[6][7];
-        //TODO: remove following line, only for testing purposes
-        a[0][0] = 1;
-        int i = validateSlottingPos(c, a);
+
+        int i = validateSlottingPos(c);
         
         if(i != -1)
         {
@@ -170,29 +183,49 @@ public class MainAppFX extends Application
         
         else
         {
-        	//TODO: Display Error?
+        	System.out.println("error");
         	
+        	//TODO: Display Error?
+        	label.setVisible(true);
+        	label.setText("Wrong type move");
+        	label.setStyle("-fx-text-color: red");
+        	
+        	Timer timer  = new Timer();
+        	timer.scheduleAtFixedRate(new TimerTask()
+        			{
+        				public void run()
+        				{
+        					if(1000 < 0)
+        					{
+        						timer.cancel();
+        					}
+        				}
+        			}, 0, 1000);
+        	
+        	fixLabel();
         }
     }
     
-	//first array 'c' represents the columns on the game-board, and the one that was clicked on by the user
-	//the second array 'a' represents the full game-board
-	public int validateSlottingPos(int c, int[][] a)
+    
+	public int validateSlottingPos(int c)
 	{
 		for(int i = 0; i < 7; i++)
 		{
-			//the first empty spot in the column that it finds will 
-			//be returned as the empty spot in which the chip will be slotted
-			if(a[i][c] == 0)
+			if(board[i][c] == 0)
 			{
 				return i;
 			}
 		}
 		
-		//if it does not find any empty slots in the entire column returns -1 because move is not valid.
 		return -1;
 	}
+	
     
+    public void fixLabel()
+    {
+    	System.out.println("fix");
+    	label.setVisible(false);
+    }
     
     /**
      * Where it all begins
