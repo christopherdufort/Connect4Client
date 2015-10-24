@@ -93,7 +93,6 @@ public class MainAppFX extends Application
             
             gridPane = (GridPane) ap.getChildren().get(1);
             label = (Label) ap.getChildren().get(2);
-            
             label.setVisible(false);
             
             
@@ -104,7 +103,7 @@ public class MainAppFX extends Application
             
             getNodeByRowColumnIndex();
             
-            //TODO: 2. Get the position that was just changed and send it as a byte array into...something?
+            //TODO: 2. Get the position that was just changed and send it as a byte array
             //byte[] byteBuffer;
             //byteBuffer[0] = 11;
             //byteBuffer[1] = i; //row
@@ -185,33 +184,30 @@ public class MainAppFX extends Application
         
         if(i != -1)
         {
-        	board[r][c] = 1;
-        	node.setStyle("-fx-background-color: red");
-        	
         	//TODO: Check for who is playing the move and change the code appropriately
-        	//TODO: maybe get background images set up instead of placing a color?
+
+        	board[r][c] = 1;
+        	
+        	String image = MainAppFX.class.getResource("y.png").toExternalForm();
+        	node.setStyle("-fx-background-image: url('" + image + "'); " +
+        	           "-fx-background-position: center center; " +
+        	           "-fx-background-repeat: stretch;");
         }
         
         else
         {
-        	//TODO: Display Error?
         	label.setVisible(true);
         	label.setText("Illegal move");
-        	label.setStyle("-fx-text-color: red");
         	
-        	Timer timer  = new Timer();
-        	timer.scheduleAtFixedRate(new TimerTask()
-        			{
-        				public void run()
-        				{
-        					if(1000 < 0)
-        					{
-        						timer.cancel();
-        					}
-        				}
-        			}, 0, 1000);
+        	new Timer().schedule(new TimerTask()
+        	{
+        	    @Override
+        	    public void run()
+        	    {
+        	    	fixLabel();
+        	    }
+        	}, 2000 );
         	
-        	fixLabel();
         }
     }
     
@@ -229,7 +225,6 @@ public class MainAppFX extends Application
     
     public void fixLabel()
     {
-    	System.out.println("fix");
     	label.setVisible(false);
     }
     
