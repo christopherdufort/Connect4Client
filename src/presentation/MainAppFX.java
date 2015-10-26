@@ -9,15 +9,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import business.C4App;
+import business.C4ClientSession;
 
 /**
  * Basic class for starting a JavaFX application.
@@ -25,11 +29,16 @@ import business.C4App;
  * @author Christopher Dufort
  * @author Elliot Wu
  * @author Nader Baydoun
+ * 
+ * TODO this class should be moved?
  */
 public class MainAppFX extends Application 
 {
     // The primary window or frame of this application
     private Stage primaryStage;
+    private String serverHost;
+    private C4ClientSession clientSession;
+    
     GridPane gridPane;
     Label label;
     
@@ -38,6 +47,7 @@ public class MainAppFX extends Application
 
     /**
      * Constructor for the FX window.
+     * TODO is this needed?
      */
     public MainAppFX() 
     {
@@ -48,21 +58,43 @@ public class MainAppFX extends Application
      * The application starts here
      *
      * @param primaryStage The Stage that represents the main Java FX pane.
+     * @throws IOException 
+     * @throws UnknownHostException 
      */
     @Override
-    public void start(Stage primaryStage)
+    public void start(Stage primaryStage) throws UnknownHostException, IOException
     {
-    	// The Stage comes from the framework so make a copy to use elsewhere
-        this.primaryStage = primaryStage;
-        
-        // Create the Scene and put it on the Stage
-        configureStage();
+    	
+		//Make a simple test dialog to ask for ip
+		TextInputDialog dialog = new TextInputDialog("");
+		dialog.setTitle("Client Connect Four");
+		dialog.setHeaderText("Server IP Address required");
+		dialog.setContentText("Please Enter The Connect 4 Server IP Address");
+		
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+			serverHost = result.get();
+		}
+		
+		clientSession = new C4ClientSession(serverHost);
+		
+		if (clientSession.establishSession())
+		{
+	    	// The Stage comes from the framework so make a copy to use elsewhere
+	        this.primaryStage = primaryStage;
+	        
+	        // Create the Scene and put it on the Stage
+	        configureStage();
 
-        // Set the window title
-        primaryStage.setTitle("Connect Four");
-        
-        // Raise the curtain on the Stage
-        primaryStage.show();
+	        // Set the window title
+	        primaryStage.setTitle("Connect Four");
+	        
+	        // Raise the curtain on the Stage
+	        primaryStage.show();
+		}
+		
+		clientSession.beginSession();
+		
     }
 
     /**
@@ -75,6 +107,7 @@ public class MainAppFX extends Application
     {
         try 
         {
+        	
             // Instantiate the FXMLLoader
             FXMLLoader loader = new FXMLLoader();
 
@@ -88,26 +121,31 @@ public class MainAppFX extends Application
             // Load the parent into a Scene
             Scene scene = new Scene(parent);
 
+            /*
             //Creates a list of nodes, each node is a child of the grid-pane, each node representing one of it's cells
             ObservableList<Node> bp = (ObservableList<Node>) parent.getChildrenUnmodifiable();
             
             //Traversing the nested panes to get to the grid-pane that represents the gameboard
-            AnchorPane ap = (AnchorPane) bp.get(1);            
-            gridPane = (GridPane) ap.getChildren().get(1);
+            AnchorPane ap = (AnchorPane) bp.get(1);   
             
             //Gets the label that is positioned in the top left corner that will pop up to display an error when necessary.
-            label = (Label) ap.getChildren().get(2);
+            label = (Label) bp.get(1);
+            
+            gridPane = (GridPane) ap.getChildren().get(1);
+            
+           
             
             //Set to false by default
             label.setVisible(false);
             
+            */
             
             // Put the Scene on Stage
             primaryStage.setScene(scene);
             
             
 
-            getNodeByRowColumnIndex();
+           // getNodeByRowColumnIndex();
             
             //TODO: Get the position that was just changed and send it as a byte array
             //byte[] byteBuffer;
@@ -128,6 +166,7 @@ public class MainAppFX extends Application
      * Traverses an arrayList of all the nodes that are the grid-pane's cells
      * and attaches an onMouseClickListener.
      */
+    /*
 	public void getNodeByRowColumnIndex() 
     {          	
         ObservableList<Node> childrens = gridPane.getChildren();
@@ -154,6 +193,7 @@ public class MainAppFX extends Application
     		);
         }
     }
+    */
     
 	/**
 	 * Method that checks the grid that is clicked.
@@ -162,6 +202,7 @@ public class MainAppFX extends Application
 	 * 
 	 * @param node The node that should be checked
 	 */
+    /*
 	@SuppressWarnings("static-access")
 	public void checkColumnValid(Node node) 
     {
@@ -237,7 +278,7 @@ public class MainAppFX extends Application
         	
         }
     }
-    
+    */
     /**
      * Checks if a position on the grid has already been taken.
      * 
@@ -258,11 +299,12 @@ public class MainAppFX extends Application
     /**
      * Makes the error label disappear.
      */
+	/*
     public void fixLabel()
     {
     	label.setVisible(false);
     }
-    
+    */
     /**
      * Where it all begins
      *
@@ -271,6 +313,8 @@ public class MainAppFX extends Application
     public static void main(String[] args) 
     {
         launch(args);
+        //implicit call to init()
+        //implicit call to start(javafx.stage.Stage)
         System.exit(0);
     }
 }

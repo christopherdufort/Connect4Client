@@ -6,9 +6,11 @@ package business;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import datacomm.Network;
+import javafx.scene.control.TextInputDialog;
 import presentation.MainAppFX;
 
 /**
@@ -18,22 +20,25 @@ import presentation.MainAppFX;
  * @author Elliot Wu
  * @author Nader Baydoun
  */
+
 @SuppressWarnings("unused")
 public class C4App 
 {
-
+	static String serverHost;
 	/**
 	 * Main starting method that calls the MainAppFX to start up the GUI window.
 	 * 
 	 * @param args
 	 */
+/*
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) 
 	{
 		MainAppFX mafx = new MainAppFX();
 		mafx.main(args);
 	}
-
+	
+*/
 	
 	//TODO: Method only checks vertical wins for now but it does not work, behaving very badly, can be removed
 	/**
@@ -45,6 +50,7 @@ public class C4App
 	 * @param player An integer representing if the move was played by the client or the server
 	 * @return A boolean value if there is a win condition
 	 */
+	/*
 	public boolean validateWin(int[][] board, int r, int c, int player)
 	{
 		int ctr = 1;
@@ -91,18 +97,26 @@ public class C4App
 		return false;
 	}
 	
-
-	
-/*
- * When game start type in 3 digit starting with 0 to get into the game, then type 3 digit starting with 1 to keep playing.
- * Anything that is not something like 1** will quit the game.
- * After one game ends, type something like 9** will end the connectiong
- * 
+	/*
+	/*
+	 * When game start type in 3 digit starting with 0 to get into the game, then type 3 digit starting with 1 to keep playing.
+	 * Anything that is not something like 1** will quit the game.
+	 * After one game ends, type something like 9** will end the connectiong
+	 * 
+ 	
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter the IP address: ");
+		
+		
 		Socket socket = new Socket(scan.nextLine(), 50000);
+		//Socket socket = new Socket(serverHost, 50000);
+		
 		byte[] message = new byte[3];
+		
+		//MainAppFX mafx = new MainAppFX();
+		//mafx.main(args);
+		
 		String input;
 		do{
 			input = scan.nextLine();
@@ -114,5 +128,7 @@ public class C4App
 		}while(message[0] != 9);
 		scan.close();
 		socket.close();
-	}*/
+	}
+	*/
 }
+

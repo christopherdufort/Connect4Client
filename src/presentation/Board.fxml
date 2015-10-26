@@ -6,16 +6,17 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="796.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="796.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
    <bottom>
       <HBox prefHeight="47.0" prefWidth="1089.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Quit">
+            <Button mnemonicParsing="false" onAction="#quitClicked" prefHeight="25.0" prefWidth="160.0" text="Quit">
                <HBox.margin>
                   <Insets left="250.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="160.0" text="New Game">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveMade" prefHeight="25.0" prefWidth="75.0" text="TEMPMOVE" />
+            <Button mnemonicParsing="false" onAction="#newGameClicked" prefHeight="28.0" prefWidth="160.0" text="New Game">
                <HBox.margin>
                   <Insets left="250.0" top="10.0" />
                </HBox.margin>
@@ -94,8 +95,10 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
                </children>
             </GridPane>
-            <Label fx:id="error" layoutX="13.0" layoutY="14.0" text="Illegal move" />
          </children>
       </AnchorPane>
    </center>
+   <top>
+      <Label fx:id="error" text="Illegal move" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
