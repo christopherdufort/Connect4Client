@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="905.0" prefWidth="1231.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardController">
+   <bottom>
+      <HBox prefHeight="89.0" prefWidth="1215.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Quit">
+               <HBox.margin>
+                  <Insets left="350.0" top="35.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="New Game">
+               <HBox.margin>
+                  <Insets left="200.0" top="35.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <top>
+      <Label fx:id="label" text="Label" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <AnchorPane prefHeight="665.0" prefWidth="1147.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="695.0" fitWidth="908.0" layoutX="163.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@b.png" />
+               </image>
+            </ImageView>
+            <GridPane layoutX="163.0" layoutY="28.0" prefHeight="681.0" prefWidth="910.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="330.0" minHeight="10.0" prefHeight="113.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ImageView fx:id="_00" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="_10" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                  <ImageView fx:id="_20" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                  <ImageView fx:id="_30" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                  <ImageView fx:id="_40" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                  <ImageView fx:id="_50" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
+                  <ImageView fx:id="_60" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" />
+                  <ImageView fx:id="_01" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_11" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_21" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_31" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_41" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_51" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_61" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                  <ImageView fx:id="_02" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_12" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_22" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_32" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_42" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_52" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_62" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                  <ImageView fx:id="_03" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_13" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_23" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_33" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_43" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_53" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_63" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                  <ImageView fx:id="_04" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_14" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_24" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_34" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_44" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_54" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_64" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                  <ImageView fx:id="_05" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_15" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_25" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_35" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_45" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_55" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                  <ImageView fx:id="_65" fitHeight="115.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                  <Button fx:id="_0" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.rowSpan="6" />
+                  <Button fx:id="_1" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="685.0" prefWidth="130.0" text="Button" GridPane.columnIndex="1" GridPane.rowSpan="6" />
+                  <Button fx:id="_2" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.columnIndex="2" GridPane.rowSpan="6" />
+                  <Button fx:id="_3" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.columnIndex="3" GridPane.rowSpan="6" />
+                  <Button fx:id="_4" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.columnIndex="4" GridPane.rowSpan="6" />
+                  <Button fx:id="_5" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.columnIndex="5" GridPane.rowSpan="6" />
+                  <Button fx:id="_6" mnemonicParsing="false" onAction="#moveMade" opacity="0.0" prefHeight="681.0" prefWidth="132.0" text="Button" GridPane.columnIndex="6" GridPane.rowSpan="6" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
