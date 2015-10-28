@@ -50,7 +50,7 @@ public class MainAppFX extends Application
     public MainAppFX() 
     {
         super();
-        //BoardController bc = new BoardController(); FIXME constructor never called
+        //BoardController bc = new BoardController(); constructor never called
     }
 
     /**
