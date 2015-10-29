@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Optional;
-import controller.BoardController;
+import controller.ClientGameController;
 
 /**
  * Basic class for starting a JavaFX application.
@@ -30,7 +30,7 @@ public class MainAppFX extends Application
     private Stage primaryStage;
     private String serverHost;
     
-    BoardController bc;
+    ClientGameController bc;
     
 
     /**
@@ -105,7 +105,7 @@ public class MainAppFX extends Application
             // scene graph such as AnchorPane and most other containers
             Parent parent = (BorderPane) loader.load();
             
-            this.bc = (BoardController) loader.getController();
+            this.bc = (ClientGameController) loader.getController();
             this.bc.establishConnection(serverHost);
             
             // Load the parent into a Scene
