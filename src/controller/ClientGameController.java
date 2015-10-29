@@ -46,16 +46,8 @@ public class ClientGameController {
 		int column = Integer.parseInt(id.substring(1, 2));
 		System.out.println("Column clicked: " + column);
 
-		if (gameBoard[column][5] == 0) {
+		if (gameBoard[column][5] != 0) {
 
-			int emptyRow = findEmptyPosition(column);
-
-			updateBoardDisplay(clientsTurn, column, emptyRow);
-
-			byte[] move = new byte[] { 2, (byte) column, (byte) emptyRow };
-
-			sendMessage(move);
-		} else {
 			// Makes the error label visible
 			label.setVisible(true);
 
@@ -66,6 +58,15 @@ public class ClientGameController {
 					fixLabel();
 				}
 			}, 2000);
+		} else {
+
+			int emptyRow = findEmptyPosition(column);
+
+			updateBoardDisplay(clientsTurn, column, emptyRow);
+
+			byte[] move = new byte[] { 2, (byte) column, (byte) emptyRow };
+
+			sendMessage(move);
 		}
 	}
 
