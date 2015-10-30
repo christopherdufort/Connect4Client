@@ -22,7 +22,6 @@ public class ClientGameController {
 	private int[][] gameBoard;
 	private boolean gameStarted;
 
-	private GridPane gridPane;
 	private ObservableList<Node> children;
 	private Label label;
 
@@ -31,12 +30,11 @@ public class ClientGameController {
 
 	private final int SERVERPORT = 50000;
 
-	@FXML
-	private Label error;
 	@SuppressWarnings("unused")
 	private String serverHost;
 
-	public ClientGameController() {
+	public ClientGameController() 
+	{
 		super();
 		clientsTurn = true;
 		gameStarted = false;
@@ -44,26 +42,33 @@ public class ClientGameController {
 	}
 
 	@FXML
-	public void onBoardClicked(ActionEvent event) throws IOException {
+	public void onBoardClicked(ActionEvent event) throws IOException 
+	{
 
 		String id = ((Node) event.getSource()).getId();
 		int column = Integer.parseInt(id.substring(1, 2));
 		System.out.println("Column clicked: " + column);
 
 		//if the column the user clicked is full
-		if (gameBoard[column][5] != 0) {
+		if (gameBoard[column][5] != 0) 
+		{
 
 			// Makes the error label visible
 			label.setVisible(true);
 
 			// Sets an asynchronous timer for 2000 milliseconds
-			new Timer().schedule(new TimerTask() {
+			new Timer().schedule(new TimerTask() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					fixLabel();
 				}
 			}, 2000);
-		} else {
+		} 
+		
+		else 
+		{
 
 			int emptyRow = findEmptyPosition(column);
 
@@ -76,12 +81,15 @@ public class ClientGameController {
 		}
 	}
 
-	private int findEmptyPosition(int column) {
+	private int findEmptyPosition(int column) 
+	{
 
 		int result = -1;
 
-		for (int row = 0; row < 6; row++) {
-			if (gameBoard[column][row] == 0) {
+		for (int row = 0; row < 6; row++) 
+		{
+			if (gameBoard[column][row] == 0) 
+			{
 				result = row;
 				return result;
 			}
@@ -89,38 +97,61 @@ public class ClientGameController {
 		return result;
 	}
 
-	private void updateBoardDisplay(boolean clientsTurn, int column, int emptyRow) {
+	private void updateBoardDisplay(boolean clientsTurn, int column, int emptyRow) 
+	{
 		String curId;
 		String searchId;
 		Node node = null;
 
-		for (Node child : children) {
+		for (Node child : children) 
+		{
 			curId = child.getId();
 			searchId = "_" + column + emptyRow;
 
-			if (curId.equals(searchId)) {
+			if (curId.equals(searchId)) 
+			{
 				node = child;
 				break;
 			}
 		}
 
-		if (clientsTurn) {
+		System.out.println("COLUMN: " + column);
+		System.out.println("ROW: " + emptyRow);
+		
+		if (clientsTurn) 
+		{
 			System.out.println("\nupdateBoardDisplay() : CLIENT's move.");
 			gameBoard[column][emptyRow] = 2;
+			
+    		node.setStyle("-fx-background-image: url('" + r + "'); " +
+	           "-fx-background-position: center center; " +
+	           "-fx-background-repeat: stretch;");
+ 	
+			
 			clientsTurn = false;
-		} else {
+		} 
+		
+		else 
+		{
 			System.out.println("\nupdateBoardDisplay() : SERVER's move.");
 			System.out.println("\nAI move: " + column + ", " + emptyRow);
+			
+    		node.setStyle("-fx-background-image: url('" + y + "'); " +
+    		           "-fx-background-position: center center; " +
+    		           "-fx-background-repeat: stretch;");
 			
 			gameBoard[column][emptyRow] = 1;
 			clientsTurn = true;
 		}
 
 		// TODO remove this after gui updates properly
-		for (int i = 5; i > -1; i--) {
-			for (int j = 0; j < 7; j++) {
+		for (int i = 5; i > -1; i--) 
+		{
+			for (int j = 0; j < 7; j++) 
+			{
 				System.out.print(gameBoard[j][i] + " ");
 			}
+			
 			System.out.println();
 		}
 	}
@@ -170,36 +201,45 @@ public class ClientGameController {
 		}
 	}
 
-	public boolean establishConnection(String serverHost){
-		try{
+	public boolean establishConnection(String serverHost)
+	{
+		try
+		{
 			this.serverHost = serverHost;
 			this.socket = new Socket(serverHost, SERVERPORT);
 			byte[] sessionRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
 			Network.sendMessage(socket, sessionRequest);
 			handleReply();
 			return true;
-		}catch(IOException e){
+		}
+		
+		catch(IOException e)
+		{
 			return false;
 		}
 	}
 	
-	public boolean isStarted(){
+	public boolean isStarted()
+	{
 		return gameStarted;
 	}
 
-	public void setLabel(Label label) {
+	public void setLabel(Label label) 
+	{
 		this.label = label;
+		this.label.setStyle("-fx-text-fill: red;");
 	}
 
-	public void setGridPane(GridPane gridPane) {
-		this.gridPane = gridPane;
+	public void setGridPaneChildren(GridPane gridPane) 
+	{
 		children = gridPane.getChildren();
 	}
 
 	/**
 	 * Makes the error label disappear.
 	 */
-	private void fixLabel() {
+	private void fixLabel() 
+	{
 		label.setVisible(false);
 	}
 

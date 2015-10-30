@@ -116,7 +116,7 @@ public class MainAppFX extends Application
             //Traversing the nested panes to get to the grid-pane that represents the gameboard
             AnchorPane ap = (AnchorPane) bp.get(2);            
             
-            this.controller.setGridPane((GridPane) ap.getChildren().get(1));    
+            this.controller.setGridPaneChildren((GridPane) ap.getChildren().get(1));    
             
             //Gets the label that is positioned in the top left corner that will pop up to display an error when necessary.
             for(Node node : bp)
