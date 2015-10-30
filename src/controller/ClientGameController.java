@@ -114,9 +114,6 @@ public class ClientGameController {
 				break;
 			}
 		}
-
-		System.out.println("COLUMN: " + column);
-		System.out.println("ROW: " + emptyRow);
 		
 		if (clientsTurn) 
 		{
@@ -127,7 +124,26 @@ public class ClientGameController {
 	           "-fx-background-position: center center; " +
 	           "-fx-background-repeat: stretch;");
  	
-			
+    		
+    		int i = -1;
+    		
+    		if(clientsTurn)
+    		{
+    			i = 2;
+    		}
+    		
+    		else
+    		{
+    			i = 1;
+    		}
+    		
+    		boolean b = validateWin(gameBoard, emptyRow, column, i);
+			if(b)
+			{
+				System.out.println("SOMEONE ONE STOP THE PRESSES !!!!!!!!!!!!!!!11!!!!!!!!!1!!");
+			}
+    		
+    		
 			clientsTurn = false;
 		} 
 		
@@ -135,25 +151,133 @@ public class ClientGameController {
 		{
 			System.out.println("\nupdateBoardDisplay() : SERVER's move.");
 			System.out.println("\nAI move: " + column + ", " + emptyRow);
+			gameBoard[column][emptyRow] = 1;
 			
     		node.setStyle("-fx-background-image: url('" + y + "'); " +
     		           "-fx-background-position: center center; " +
     		           "-fx-background-repeat: stretch;");
-			
-			gameBoard[column][emptyRow] = 1;
+    		
 			clientsTurn = true;
 		}
-
-		// TODO remove this after gui updates properly
-		for (int i = 5; i > -1; i--) 
+	}
+	
+	/**
+	 * Method that checks win.
+	 * 
+	 * @param board The full array of the board
+	 * @param r The row in which the latest move was played
+	 * @param c The column in which the latest move was played
+	 * @param player An integer representing if the move was played by the client or the server
+	 * @return A boolean value if there is a win condition
+	 */
+	public boolean validateWin(int[][] board, int r, int c, int player)
+	{
+		//TODO: METHOD HAS NOT BEEN TESTED
+		int ctr = 1;		
+		
+		System.out.println("Begin validation");
+		
+		try
 		{
-			for (int j = 0; j < 7; j++) 
+			System.out.println("Start first round of validation");
+			for(int i = 1; i < 5; i++)
 			{
-				System.out.print(gameBoard[j][i] + " ");
+				System.out.println("Start round of check");
+				if(board[c][r+i] == player)
+				{
+					System.out.println("rips");
+					System.out.println("COUNTER PLZ: " + ctr);
+					ctr++;
+				}
+								
+				if(board[c][r-i] == player)
+				{
+					System.out.println("rips");
+					System.out.println("COUNTER PLZ: " + ctr);
+					ctr++;
+				}	
 			}
 			
-			System.out.println();
+			System.out.println("COUNTER FOR WIN: " + ctr);
+			
+			if(ctr >= 4)
+			{
+				return true;
+			}
+			
+			ctr = 1;
+			
+			System.out.println("Start first round of validation");
+			for(int i = 1; i < 6; i++)
+			{
+				if(board[c+i][r] == player)
+				{
+					ctr++;
+				}
+								
+				if(board[c+i][r] == player)
+				{
+					ctr++;
+				}
+			}
+			
+			System.out.println("COUNTER FOR WIN: " + ctr);
+			
+			if(ctr >= 4)
+			{
+				return true;
+			}
+			
+			ctr = 1;
+			
+			System.out.println("Start first round of validation");
+			for(int i = 1; i < 6; i++)
+			{
+				if(board[c+i][r+i] == player)
+				{
+					ctr++;
+				}
+								
+				if(board[c-i][r-i] == player)
+				{
+					ctr++;
+				}
+			}
+			
+			if(ctr >= 4)
+			{
+				return true;
+			}
+			
+			ctr = 1;
+			
+			for(int i = 1; i < 6; i++)
+			{
+				if(board[c-i][r+i] == player)
+				{
+					ctr++;
+				}
+								
+				if(board[c-i][r+i] == player)
+				{
+					ctr++;
+				}
+			}
+			
+			if(ctr >= 4)
+			{
+				return true;
+			}
+			
+			return false;
 		}
+		
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			
+		}
+		
+		return false;
 	}
 
 	@FXML
