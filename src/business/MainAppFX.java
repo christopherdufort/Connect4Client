@@ -74,6 +74,7 @@ public class MainAppFX extends Application
 			serverHost = result.get();
 			
 		}while(!controller.establishConnection(serverHost));
+		
 		if(controller.isStarted())
 			primaryStage.show();
     }
