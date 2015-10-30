@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import business.MainAppFX;
+import datacomm.MessageType;
 import datacomm.Network;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -18,8 +18,9 @@ import javafx.scene.layout.GridPane;
 public class ClientGameController {
 
 	private Socket socket;
-	private boolean clientsTurn = true;
-	private int[][] gameBoard = new int[7][6];
+	private boolean clientsTurn;
+	private int[][] gameBoard;
+	private boolean gameStarted;
 
 	private GridPane gridPane;
 	private ObservableList<Node> children;
@@ -37,6 +38,9 @@ public class ClientGameController {
 
 	public ClientGameController() {
 		super();
+		clientsTurn = true;
+		gameStarted = false;
+		gameBoard = new int[7][6];
 	}
 
 	@FXML
@@ -46,6 +50,7 @@ public class ClientGameController {
 		int column = Integer.parseInt(id.substring(1, 2));
 		System.out.println("Column clicked: " + column);
 
+		//if the column the user clicked is full
 		if (gameBoard[column][5] != 0) {
 
 			// Makes the error label visible
@@ -64,9 +69,10 @@ public class ClientGameController {
 
 			updateBoardDisplay(clientsTurn, column, emptyRow);
 
-			byte[] move = new byte[] { 2, (byte) column, (byte) emptyRow };
+			byte[] move = new byte[] {MessageType.MOVE.getCode(), (byte) column, (byte) emptyRow };
 
-			sendMessage(move);
+			Network.sendMessage(socket, move);
+			handleReply();
 		}
 	}
 
@@ -126,55 +132,59 @@ public class ClientGameController {
 
 	@FXML
 	public void quitClicked(ActionEvent event) throws IOException {
+		/*
+		 * TODO
+		 * This should pop up a dialog box for the user to confirm
+		 * before socket.close(); and Platform.exit();
+		 * 
+		 */
 		System.out.println("Good Bye");
-		byte[] quitRequest = new byte[] { 9, 0, 0 };
-		sendMessage(quitRequest);
-		// TODO close socket?
+		byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, quitRequest);
+		socket.close();
 		Platform.exit();
 	}
-
-	public void sendMessage(byte[] message) throws IOException {
-		Network.sendMessage(socket, message);
-		// If message sent is not a end game message await response
-		if (message[0] != 9) // TODO either leave this or get response kill
-								// message.
-		{
-			byte[] reply;
-			reply = Network.receiveMessage(socket);
-			this.handleReply(reply);
-		}
-
-		// socket.close();
-	}
-
-	private void handleReply(byte[] reply) {
-
-		switch (reply[0]) {
-		case 0:
-			System.out.println("Reply message started with a zero");
+	
+	private void handleReply() throws IOException {
+		
+		byte[] reply = Network.receiveMessage(socket);
+		switch (MessageType.fromValue(reply[0])) {
+		case NEW_GAME:
+			gameStarted = true;
+			break;
+		case MOVE:
+			System.out.println("handleReply() : This is a move");
 			updateBoardDisplay(false, reply[1], reply[2]);
 			break;
-		case 1:
-			System.out.println("Reply message started with a one");
+		case USER_WIN:
+			System.out.println("handleReply() : User won");
 			break;
-		case 3:
-			System.out.println("Reply message started with a three");
+		case SERVER_WIN:
+			System.out.println("handleReply() : Server won");
+			break;
+		case TIE:
+			System.out.println("handleReply() : Tie");
 			break;
 		default:
-			System.out.println("reply defaulted?");
+			System.out.println("handleReply() : reply defaulted?");
 		}
 	}
 
-	public void establishConnection(String serverHost) throws IOException {
-		this.serverHost = serverHost;
-
-		// FIXME THIS ONLY WORKS FOR A SINGLE MESSAGE WHY!!!?
-		// FIXME WHERE DOES THIS GO??!?!?!
-		this.socket = new Socket(serverHost, SERVERPORT);
-
-		byte[] sessionRequest = new byte[] { 0, 0, 0 };
-
-		this.sendMessage(sessionRequest);
+	public boolean establishConnection(String serverHost){
+		try{
+			this.serverHost = serverHost;
+			this.socket = new Socket(serverHost, SERVERPORT);
+			byte[] sessionRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
+			Network.sendMessage(socket, sessionRequest);
+			handleReply();
+			return true;
+		}catch(IOException e){
+			return false;
+		}
+	}
+	
+	public boolean isStarted(){
+		return gameStarted;
 	}
 
 	public void setLabel(Label label) {

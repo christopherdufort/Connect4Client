@@ -10,7 +10,7 @@
    <bottom>
       <HBox prefHeight="89.0" prefWidth="1215.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Quit">
+            <Button mnemonicParsing="false" onAction="#quitClicked" prefHeight="25.0" prefWidth="170.0" text="Quit">
                <HBox.margin>
                   <Insets left="350.0" top="35.0" />
                </HBox.margin>

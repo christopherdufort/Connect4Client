@@ -29,8 +29,9 @@ public class MainAppFX extends Application
     // The primary window or frame of this application
     private Stage primaryStage;
     private String serverHost;
+    private TextInputDialog dialog;
     
-    ClientGameController bc;
+    ClientGameController controller;
     
 
     /**
@@ -39,6 +40,7 @@ public class MainAppFX extends Application
     public MainAppFX() 
     {
         super();
+        serverHost = "";
     }
    
     public static void main(String[] args) 
@@ -59,29 +61,21 @@ public class MainAppFX extends Application
     @Override
     public void start(Stage primaryStage) throws UnknownHostException, IOException
     {    	
-		//Make a simple test dialog to ask for ip
-		TextInputDialog dialog = new TextInputDialog("");
-		dialog.setTitle("Client Connect Four");
-		dialog.setHeaderText("Server IP Address required");
-		dialog.setContentText("Please Enter The Connect 4 Server IP Address");
-		
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent())
-		{
-			serverHost = result.get();
-		}
-		
     	// The Stage comes from the framework so make a copy to use elsewhere
         this.primaryStage = primaryStage;
-        
         // Create the Scene and put it on the Stage
         configureStage();
-
         // Set the window title
         primaryStage.setTitle("Connect Four");
         
-        // Raise the curtain on the Stage
-        primaryStage.show();
+		Optional<String> result;
+		do{
+			result = dialog.showAndWait();
+			serverHost = result.get();
+			
+		}while(!controller.establishConnection(serverHost));
+		if(controller.isStarted())
+			primaryStage.show();
     }
 
     /**
@@ -94,6 +88,11 @@ public class MainAppFX extends Application
     {
         try 
         {
+        	//Make a simple test dialog to ask for ip
+    		dialog = new TextInputDialog("");
+    		dialog.setTitle("Client Connect Four");
+    		dialog.setHeaderText("Server IP Address required");
+    		dialog.setContentText("Please Enter The Connect 4 Server IP Address");
         	
             // Instantiate the FXMLLoader
             FXMLLoader loader = new FXMLLoader();
@@ -105,8 +104,7 @@ public class MainAppFX extends Application
             // scene graph such as AnchorPane and most other containers
             Parent parent = (BorderPane) loader.load();
             
-            this.bc = (ClientGameController) loader.getController();
-            this.bc.establishConnection(serverHost);
+            this.controller = (ClientGameController) loader.getController();
             
             // Load the parent into a Scene
             Scene scene = new Scene(parent);
@@ -118,7 +116,7 @@ public class MainAppFX extends Application
             //Traversing the nested panes to get to the grid-pane that represents the gameboard
             AnchorPane ap = (AnchorPane) bp.get(2);            
             
-            this.bc.setGridPane((GridPane) ap.getChildren().get(1));    
+            this.controller.setGridPane((GridPane) ap.getChildren().get(1));    
             
             //Gets the label that is positioned in the top left corner that will pop up to display an error when necessary.
             for(Node node : bp)
@@ -128,7 +126,7 @@ public class MainAppFX extends Application
 	            	if(node.getId().equals("label"))
 	            	{
 	            		node.setVisible(false);
-	            		this.bc.setLabel((Label) node);
+	            		this.controller.setLabel((Label) node);
 	            	}
             	}
             }            
