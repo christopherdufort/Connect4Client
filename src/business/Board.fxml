@@ -31,7 +31,7 @@
       </Label>
    </top>
    <center>
-      <AnchorPane prefHeight="665.0" prefWidth="1147.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchor" prefHeight="665.0" prefWidth="1147.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="695.0" fitWidth="908.0" layoutX="163.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>

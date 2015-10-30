@@ -18,7 +18,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 public class ClientGameController {
 
@@ -28,6 +30,7 @@ public class ClientGameController {
 	private boolean gameStarted;
 
 	private ObservableList<Node> children;
+	private AnchorPane ap;
 	private Label label;
 
 	String y = MainAppFX.class.getResource("y.png").toExternalForm();
@@ -151,6 +154,7 @@ public class ClientGameController {
 	{
 		byte[] newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
 		Network.sendMessage(socket, newGameRequest);
+		resetGame();
 	}
 
 	@FXML
@@ -225,6 +229,7 @@ public class ClientGameController {
 	private void displayEndDialog(String displayMessage) throws IOException {
 		
 		//TODO disable the board(only the grid leave the buttons)
+		this.ap.setDisable(true);
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Game has ended Dialog");
@@ -241,6 +246,7 @@ public class ClientGameController {
 		if (result.get() == buttonYes)
 		{
 			//TODO RESET GUI AND GAME BOARD method (new empty array, loop through clearing images)
+			resetGame();
 			System.out.println("Restart the game");
 			byte[] newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
 			Network.sendMessage(socket, newGameRequest);
@@ -254,7 +260,7 @@ public class ClientGameController {
 			Platform.exit();
 			
 		} else {
-		    //What should we do here?
+		    //TODO: What should we do here?
 		}
 		
 	}
@@ -288,6 +294,28 @@ public class ClientGameController {
 		this.label.setStyle("-fx-text-fill: red;");
 	}
 
+	private void resetGame()
+	{
+		//TODO RESET GUI AND GAME BOARD method (new empty array, loop through clearing images)
+		clientsTurn = true;
+		gameBoard = new int[7][6];
+		
+		ap.setDisable(false);
+		
+		for (Node child : children) 
+		{
+			if (child.getClass().equals(HBox.class)) 
+			{
+				child.setStyle("");
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+	}
+	
 	public void setGridPaneChildren(GridPane gridPane) 
 	{
 		children = gridPane.getChildren();
@@ -299,6 +327,11 @@ public class ClientGameController {
 	private void fixLabel() 
 	{
 		label.setVisible(false);
+	}
+
+	public void setAnchorPane(AnchorPane ap) 
+	{
+		this.ap = ap;
 	}
 
 }
