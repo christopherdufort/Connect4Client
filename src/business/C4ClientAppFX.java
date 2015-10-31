@@ -26,7 +26,7 @@ import controller.ClientGameController;
  * @author Elliot Wu
  * @author Nader Baydoun
  */
-public class MainAppFX extends Application 
+public class C4ClientAppFX extends Application 
 {
     // The primary window or frame of this application
     private Stage primaryStage;
@@ -39,7 +39,7 @@ public class MainAppFX extends Application
     /**
      * Constructor for the FX window.
      */
-    public MainAppFX() 
+    public C4ClientAppFX() 
     {
         super();
         serverHost = "";
@@ -111,7 +111,7 @@ public class MainAppFX extends Application
             FXMLLoader loader = new FXMLLoader();
             
             // Set the location of the fxml file in the FXMLLoader
-            loader.setLocation(MainAppFX.class.getResource("Board.fxml")); 
+            loader.setLocation(C4ClientAppFX.class.getResource("Board.fxml")); 
             
             // Parent is the base class for all nodes that have children in the
             // scene graph such as AnchorPane and most other containers

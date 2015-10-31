@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
-import business.MainAppFX;
+import business.C4ClientAppFX;
 import datacomm.MessageType;
 import datacomm.Network;
 import javafx.application.Platform;
@@ -32,8 +32,8 @@ public class ClientGameController {
 	private AnchorPane ap;
 	private Label label;
 
-	String y = MainAppFX.class.getResource("y.png").toExternalForm();
-	String r = MainAppFX.class.getResource("r.png").toExternalForm();
+	String y = C4ClientAppFX.class.getResource("y.png").toExternalForm();
+	String r = C4ClientAppFX.class.getResource("r.png").toExternalForm();
 
 	private final int SERVERPORT = 50000;
 
