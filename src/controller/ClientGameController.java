@@ -32,6 +32,12 @@ import javafx.scene.layout.HBox;
 public class ClientGameController 
 {
 
+	//Image that will set a yellow checker for server moves
+	String y = C4ClientAppFX.class.getResource("y.png").toExternalForm();
+	
+	//Image that will set a red checker for client moves
+	String r = C4ClientAppFX.class.getResource("r.png").toExternalForm();
+	
 	private Socket socket;
 	private boolean clientsTurn;
 	private int[][] gameBoard;
@@ -44,12 +50,6 @@ public class ClientGameController
 	
 	//Label that will be manipulated for error message
 	private Label label;
-
-	//Image that will set a yellow checker for server moves
-	String y = C4ClientAppFX.class.getResource("y.png").toExternalForm();
-	
-	//Image that will set a red checker for client moves
-	String r = C4ClientAppFX.class.getResource("r.png").toExternalForm();
 
 	private final int SERVERPORT = 50000;
 
@@ -118,6 +118,128 @@ public class ClientGameController
 		}
 	}
 
+	/**
+	 * Handles the button click on New Game button.
+	 * The FXML annotation binds this method to the button click.
+	 * 
+	 * @param event Event that was fired from the button click
+	 * @throws IOException That can be thrown due to network code
+	 */
+	@FXML
+	public void newGameClicked(ActionEvent event) throws IOException 
+	{
+		System.out.println("New Game pressed");
+		byte[] newGameRequest = new byte[] {MessageType.END_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, newGameRequest);
+		newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, newGameRequest);
+		handleReply();
+	}
+
+	/**
+	 * Handles the button click on quit button.
+	 * The FXML annotation binds this method to the button click.
+	 * 
+	 * @param event Event that was fired from the button click
+	 * @throws IOException That can be thrown due to network code
+	 */
+	@FXML
+	public void quitClicked(ActionEvent event) throws IOException 
+	{
+		//Send an end game request method to the server
+		byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, quitRequest);
+		
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText("you have selected to Quit this game.");
+		alert.setContentText("Are you sure you want to quit?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == ButtonType.OK)
+		{
+			// ... user chose OK
+			System.out.println("Good Bye");
+			quitRequest = new byte[] { MessageType.END_SESSION.getCode(), 0, 0 };
+			Network.sendMessage(socket, quitRequest);
+			socket.close();
+			Platform.exit();
+		} 
+		
+		else 
+		{
+		    // ... user chose CANCEL or closed the dialog
+			//Do nothing.
+		}
+		
+	
+	}
+
+	/**
+	 * Method that establishes connection to the server.
+	 * 
+	 * @param serverHost String serverHost
+	 * @return boolean Shows if the connection has been successfully established
+	 */
+	public boolean establishConnection(String serverHost)
+	{
+		try
+		{
+			this.serverHost = serverHost;
+			this.socket = new Socket(serverHost, SERVERPORT);
+			byte[] sessionRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
+			Network.sendMessage(socket, sessionRequest);
+			handleReply();
+			return true;
+		}
+		
+		catch(IOException e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Setter method that is called from the GUI creation class
+	 * to set a handle to the label object that will be manipulated
+	 * to display error messages.
+	 * 
+	 * @param label Handle to a label object
+	 */
+	public void setLabel(Label label) 
+	{
+		this.label = label;
+		this.label.setStyle("-fx-text-fill: red;");
+	}
+	
+	/**
+	 * Setter method to get a handle on the gridPane object
+	 * from the main GUI class.
+	 * The children of the gridPane are the elements of the gameBoard
+	 * and are retrieved for further manipulation.
+	 * 
+	 * @param gridPane Handle to a GridPane object
+	 */
+	public void setGridPaneChildren(GridPane gridPane) 
+	{
+		children = gridPane.getChildren();
+	}
+
+	/**
+	 * Setter method for the anchor pane that holds the grid and main
+	 * gameBoard GUI elements.
+	 * Is a high-level parent element and will be used to freeze and de-freeze the gameBoard 
+	 * when user input wants to be focused somewhere else.
+	 * 
+	 * @param ap Handle to an Anchor Pane object
+	 */
+	public void setAnchorPane(AnchorPane ap) 
+	{
+		this.ap = ap;
+	}
+	
 	/*
 	 * Method that will determine if a column has any more empty rows left by searching the gameBoard array
 	 * 
@@ -208,65 +330,6 @@ public class ClientGameController
     		
 			clientsTurn = true;
 		}
-	}
-
-	/**
-	 * Handles the button click on New Game button.
-	 * The FXML annotation binds this method to the button click.
-	 * 
-	 * @param event Event that was fired from the button click
-	 * @throws IOException That can be thrown due to network code
-	 */
-	@FXML
-	public void newGameClicked(ActionEvent event) throws IOException 
-	{
-		System.out.println("New Game pressed");
-		byte[] newGameRequest = new byte[] {MessageType.END_GAME.getCode(), 0, 0 };
-		Network.sendMessage(socket, newGameRequest);
-		newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
-		Network.sendMessage(socket, newGameRequest);
-		handleReply();
-	}
-
-	/**
-	 * Handles the button click on quit button.
-	 * The FXML annotation binds this method to the button click.
-	 * 
-	 * @param event Event that was fired from the button click
-	 * @throws IOException That can be thrown due to network code
-	 */
-	@FXML
-	public void quitClicked(ActionEvent event) throws IOException 
-	{
-		//Send an end game request method to the server
-		byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
-		Network.sendMessage(socket, quitRequest);
-		
-		
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("you have selected to Quit this game.");
-		alert.setContentText("Are you sure you want to quit?");
-
-		Optional<ButtonType> result = alert.showAndWait();
-		
-		if (result.get() == ButtonType.OK)
-		{
-			// ... user chose OK
-			System.out.println("Good Bye");
-			quitRequest = new byte[] { MessageType.END_SESSION.getCode(), 0, 0 };
-			Network.sendMessage(socket, quitRequest);
-			socket.close();
-			Platform.exit();
-		} 
-		
-		else 
-		{
-		    // ... user chose CANCEL or closed the dialog
-			//Do nothing.
-		}
-		
-	
 	}
 	
 	/*
@@ -360,44 +423,7 @@ public class ClientGameController
 		}
 		
 	}
-
-	/**
-	 * Method that establishes connection to the server.
-	 * 
-	 * @param serverHost String serverHost
-	 * @return boolean Shows if the connection has been successfully established
-	 */
-	public boolean establishConnection(String serverHost)
-	{
-		try
-		{
-			this.serverHost = serverHost;
-			this.socket = new Socket(serverHost, SERVERPORT);
-			byte[] sessionRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
-			Network.sendMessage(socket, sessionRequest);
-			handleReply();
-			return true;
-		}
-		
-		catch(IOException e)
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Setter method that is called from the GUI creation class
-	 * to set a handle to the label object that will be manipulated
-	 * to display error messages.
-	 * 
-	 * @param label Handle to a label object
-	 */
-	public void setLabel(Label label) 
-	{
-		this.label = label;
-		this.label.setStyle("-fx-text-fill: red;");
-	}
-
+	
 	/*
 	 * Method that resets the gameBoard and resets the elements of the
 	 * GUI back to their default state.
@@ -423,20 +449,7 @@ public class ClientGameController
 		}
 	}
 	
-	/**
-	 * Setter method to get a handle on the gridPane object
-	 * from the main GUI class.
-	 * The children of the gridPane are the elements of the gameBoard
-	 * and are retrieved for further manipulation.
-	 * 
-	 * @param gridPane Handle to a GridPane object
-	 */
-	public void setGridPaneChildren(GridPane gridPane) 
-	{
-		children = gridPane.getChildren();
-	}
-
-	/**
+	/*
 	 * Makes the error label not visible.
 	 * Is called so annoying error message does not linger for
 	 * too long in GUI.
@@ -444,19 +457,6 @@ public class ClientGameController
 	private void fixLabel() 
 	{
 		label.setVisible(false);
-	}
-
-	/**
-	 * Setter method for the anchor pane that holds the grid and main
-	 * gameBoard GUI elements.
-	 * Is a high-level parent element and will be used to freeze and de-freeze the gameBoard 
-	 * when user input wants to be focused somewhere else.
-	 * 
-	 * @param ap Handle to an Anchor Pane object
-	 */
-	public void setAnchorPane(AnchorPane ap) 
-	{
-		this.ap = ap;
 	}
 
 }

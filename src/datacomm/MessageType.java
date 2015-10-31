@@ -12,37 +12,31 @@ package datacomm;
  * 
  * @version Java 1.8
  */
-public enum MessageType {
+public enum MessageType 
+{
 	NEW_GAME((byte) 0), MOVE((byte) 1), TIE((byte) 2), USER_WIN((byte) 3), SERVER_WIN((byte) 4), END_GAME(
 			(byte) 8), END_SESSION((byte) 9), NO_SUCH_ENUM((byte) 100);
 
 	private byte code;
 
 	/**
-	 * Enum constructor accepts a code and updates private field.
+	 * Getter that returns code.
 	 * 
-	 * @param code
-	 *            provided byte value of enum.
+	 * @return code the associated value
 	 */
-	MessageType(byte code) {
-		this.code = code;
-	}
-
-	/**
-	 * 
-	 * @return code the associated value.
-	 */
-	public byte getCode() {
+	public byte getCode() 
+	{
 		return code;
 	}
 
 	/**
+	 * Determines the type of message sent by mapping numbers to enum types.
 	 * 
-	 * @param value
-	 *            byte values used within messages associated with an enum name.
-	 * @return enum associated with values provided.
+	 * @param value byte values used within messages associated with an enum name
+	 * @return enum associated with values provided
 	 */
-	public static MessageType fromValue(byte value) {
+	public static MessageType fromValue(byte value) 
+	{
 		switch (value) {
 		case 0:
 			return NEW_GAME;
@@ -61,5 +55,15 @@ public enum MessageType {
 		default:
 			return NO_SUCH_ENUM;
 		}
+	}
+	
+	/**
+	 * Enum constructor accepts a code and updates private field.
+	 * 
+	 * @param code provided byte value of enum.
+	 */
+	MessageType(byte code) 
+	{
+		this.code = code;
 	}
 }

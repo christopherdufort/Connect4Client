@@ -10,16 +10,35 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * @author Christopher , Elliot, Nader
- *
+ * Network class that sends and receives messages.
+ * 
+ * @author Christopher Dufort
+ * @author Elliot Wu
+ * @author Nader Baydoun
  */
-public class Network {
+public class Network 
+{
 	
+	/**
+	 * Method that sends byte message across the connection.
+	 * 
+	 * @param socket Socket at which the message is being sent
+	 * @param message Byte array to be sent
+	 * @throws IOException Can be thrown by the network
+	 */
 	public static void sendMessage(Socket socket, byte[] message) throws IOException
 	{
 		OutputStream out = socket.getOutputStream();
 		out.write(message);
 	}
+	
+	/**
+	 * Method that receives message across the connection.
+	 * 
+	 * @param socket Socket at which the message is being received
+	 * @return byte[] Byte array to be received
+	 * @throws IOException Can be thrown by the network
+	 */
 	public static byte[] receiveMessage(Socket socket) throws IOException
 	{
 		InputStream in = socket.getInputStream();
