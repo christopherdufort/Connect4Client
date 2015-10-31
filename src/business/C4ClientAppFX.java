@@ -45,6 +45,11 @@ public class C4ClientAppFX extends Application
         serverHost = "";
     }
    
+    /**
+     * Main method
+     * 
+     * @param args List of arguments received from command line
+     */
     public static void main(String[] args) 
     {
         launch(args);
@@ -57,23 +62,25 @@ public class C4ClientAppFX extends Application
      * The application starts here
      *
      * @param primaryStage The Stage that represents the main Java FX pane.
-     * @throws IOException 
-     * @throws UnknownHostException 
+     * @throws UnknownHostException Can be cause if an incorrect IP is given
      */
     @Override
-    public void start(Stage primaryStage) throws UnknownHostException, IOException
+    public void start(Stage primaryStage) throws UnknownHostException
     {    	
     	// The Stage comes from the framework so make a copy to use elsewhere
         this.primaryStage = primaryStage;
+        
         // Create the Scene and put it on the Stage
         configureStage();
+        
         // Set the window title
         primaryStage.setTitle("Connect Four");
         
 		Optional<String> result;
 		do{
 			result = dialog.showAndWait();
-			if(result.isPresent()){
+			if(result.isPresent())
+			{
 				serverHost = result.get();
 			}			
 		}while(!controller.establishConnection(serverHost));
@@ -81,7 +88,7 @@ public class C4ClientAppFX extends Application
 		primaryStage.show();
     }
 
-    /**
+    /*
      * Load the FXML and bundle, create a Scene and put the Scene on Stage.
      *
      * Using this approach allows you to use loader.getController() to get a
@@ -91,7 +98,7 @@ public class C4ClientAppFX extends Application
     {
         try 
         {
-        	//Make a simple test dialog to ask for ip
+        	//Make a simple test dialog to ask for IP
     		dialog = new TextInputDialog("");
     		dialog.setTitle("Client Connect Four");
     		dialog.setHeaderText("Server IP Address required");
@@ -110,7 +117,7 @@ public class C4ClientAppFX extends Application
             // Instantiate the FXMLLoader
             FXMLLoader loader = new FXMLLoader();
             
-            // Set the location of the fxml file in the FXMLLoader
+            // Set the location of the FXML file in the FXMLLoader
             loader.setLocation(C4ClientAppFX.class.getResource("Board.fxml")); 
             
             // Parent is the base class for all nodes that have children in the
@@ -141,6 +148,8 @@ public class C4ClientAppFX extends Application
             	{
 	            	if(node.getId().equals("label"))
 	            	{
+	            		//Once it finds the label node it will make it 
+	            		//not visible by default and set it to the controller
 	            		node.setVisible(false);
 	            		this.controller.setLabel((Label) node);
 	            	}
