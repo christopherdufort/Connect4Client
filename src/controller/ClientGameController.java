@@ -27,7 +27,6 @@ public class ClientGameController {
 	private Socket socket;
 	private boolean clientsTurn;
 	private int[][] gameBoard;
-	private boolean gameStarted;
 
 	private ObservableList<Node> children;
 	private AnchorPane ap;
@@ -45,7 +44,6 @@ public class ClientGameController {
 	{
 		super();
 		clientsTurn = true;
-		gameStarted = false;
 		gameBoard = new int[7][6];
 	}
 
@@ -152,19 +150,19 @@ public class ClientGameController {
 	@FXML
 	public void newGameClicked(ActionEvent event) throws IOException 
 	{
-		byte[] newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
+		System.out.println("New Game pressed");
+		byte[] newGameRequest = new byte[] {MessageType.END_GAME.getCode(), 0, 0 };
 		Network.sendMessage(socket, newGameRequest);
-		resetGame();
+		newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, newGameRequest);
+		handleReply();
 	}
 
 	@FXML
 	public void quitClicked(ActionEvent event) throws IOException {
-		/*
-		 * TODO
-		 * This should pop up a dialog box for the user to confirm
-		 * before socket.close(); and Platform.exit();
-		 * 
-		 */
+		
+		byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+		Network.sendMessage(socket, quitRequest);
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
 		alert.setHeaderText("you have selected to Quit this game.");
@@ -175,7 +173,7 @@ public class ClientGameController {
 		{
 			// ... user chose OK
 			System.out.println("Good Bye");
-			byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+			quitRequest = new byte[] { MessageType.END_SESSION.getCode(), 0, 0 };
 			Network.sendMessage(socket, quitRequest);
 			socket.close();
 			Platform.exit();
@@ -194,7 +192,8 @@ public class ClientGameController {
 		String displayMessage;
 		switch (MessageType.fromValue(reply[0])) {
 		case NEW_GAME:
-			gameStarted = true;
+			resetGame();
+			System.out.println("New game started");
 			break;
 		case MOVE:
 			System.out.println("handleReply() : This is a move");
@@ -245,16 +244,14 @@ public class ClientGameController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonYes)
 		{
-			//TODO RESET GUI AND GAME BOARD method (new empty array, loop through clearing images)
-			resetGame();
-			System.out.println("Restart the game");
 			byte[] newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
 			Network.sendMessage(socket, newGameRequest);
+			handleReply();
 		}
 		else if (result.get() == buttonNo) 
 		{
 			System.out.println("Good Bye");
-			byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+			byte[] quitRequest = new byte[] { MessageType.END_SESSION.getCode(), 0, 0 };
 			Network.sendMessage(socket, quitRequest);
 			socket.close();
 			Platform.exit();
@@ -281,11 +278,6 @@ public class ClientGameController {
 		{
 			return false;
 		}
-	}
-	
-	public boolean isStarted()
-	{
-		return gameStarted;
 	}
 
 	public void setLabel(Label label) 

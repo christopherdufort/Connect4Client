@@ -15,7 +15,7 @@
                   <Insets left="350.0" top="35.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="New Game">
+            <Button mnemonicParsing="false" onAction="#newGameClicked" prefHeight="25.0" prefWidth="170.0" text="New Game">
                <HBox.margin>
                   <Insets left="200.0" top="35.0" />
                </HBox.margin>

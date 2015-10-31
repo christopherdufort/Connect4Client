@@ -2,10 +2,12 @@ package business;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
@@ -71,12 +73,12 @@ public class MainAppFX extends Application
 		Optional<String> result;
 		do{
 			result = dialog.showAndWait();
-			serverHost = result.get();
-			
+			if(result.isPresent()){
+				serverHost = result.get();
+			}			
 		}while(!controller.establishConnection(serverHost));
 		
-		if(controller.isStarted())
-			primaryStage.show();
+		primaryStage.show();
     }
 
     /**
@@ -94,6 +96,16 @@ public class MainAppFX extends Application
     		dialog.setTitle("Client Connect Four");
     		dialog.setHeaderText("Server IP Address required");
     		dialog.setContentText("Please Enter The Connect 4 Server IP Address");
+    		dialog.setOnCloseRequest(new EventHandler<DialogEvent>(){
+
+				@Override
+				public void handle(DialogEvent event) {
+					String result = dialog.getResult();
+					if(result == null){
+						System.exit(0);
+					}
+				}
+    		});
         	
             // Instantiate the FXMLLoader
             FXMLLoader loader = new FXMLLoader();
