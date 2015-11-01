@@ -240,7 +240,7 @@ public class ClientGameController
 		this.ap = ap;
 	}
 	
-	/*
+	/**
 	 * Method that will determine if a column has any more empty rows left by searching the gameBoard array
 	 * 
 	 * @param column to be checked for empty rows
@@ -263,7 +263,7 @@ public class ClientGameController
 		return result;
 	}
 
-	/*
+	/**
 	 * Method that updates the board display
 	 * 
 	 * @param clientsTurn A boolean that specifies whether it is the client's turn or the server's
@@ -332,7 +332,7 @@ public class ClientGameController
 		}
 	}
 	
-	/*
+	/**
 	 * Method that handles reply messages from server
 	 * 
 	 * @throws IOException Exception can be caused from network code
@@ -379,7 +379,7 @@ public class ClientGameController
 		}
 	}
 
-	/*
+	/**
 	 * Displays a dialogue box to end the game
 	 * 
 	 * @param displayMessage Appropriate message displayed to the user
@@ -425,7 +425,7 @@ public class ClientGameController
 		
 	}
 	
-	/*
+	/**
 	 * Method that resets the gameBoard and resets the elements of the
 	 * GUI back to their default state.
 	 */
@@ -450,7 +450,7 @@ public class ClientGameController
 		}
 	}
 	
-	/*
+	/**
 	 * Makes the error label not visible.
 	 * Is called so annoying error message does not linger for
 	 * too long in GUI.
