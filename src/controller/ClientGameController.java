@@ -360,6 +360,7 @@ public class ClientGameController
 			//ask to play again
 			break;
 		case SERVER_WIN:
+			updateBoardDisplay(false, reply[1], reply[2]);
 			displayMessage = "The server has won the game!";
 			System.out.println("handleReply() : Server won");
 			//Lock GUI
