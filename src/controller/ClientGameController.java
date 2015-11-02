@@ -128,9 +128,11 @@ public class ClientGameController
 	@FXML
 	public void newGameClicked(ActionEvent event) throws IOException 
 	{
+		//End the game(if currently in play).
 		System.out.println("New Game pressed");
 		byte[] newGameRequest = new byte[] {MessageType.END_GAME.getCode(), 0, 0 };
 		Network.sendMessage(socket, newGameRequest);
+		//Begin a new game.
 		newGameRequest = new byte[] {MessageType.NEW_GAME.getCode(), 0, 0 };
 		Network.sendMessage(socket, newGameRequest);
 		handleReply();
@@ -146,22 +148,22 @@ public class ClientGameController
 	@FXML
 	public void quitClicked(ActionEvent event) throws IOException 
 	{
-		//Send an end game request method to the server
-		byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
-		Network.sendMessage(socket, quitRequest);
-		
-		
+	
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("you have selected to Quit this game.");
+		alert.setHeaderText("You have selected to Quit this game.");
 		alert.setContentText("Are you sure you want to quit?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		
+		//User selects OK
 		if (result.get() == ButtonType.OK)
 		{
-			// ... user chose OK
 			System.out.println("Good Bye");
+			//Send an end game message to the server.
+			byte[] quitRequest = new byte[] { MessageType.END_GAME.getCode(), 0, 0 };
+			Network.sendMessage(socket, quitRequest);
+			//Send an end session message to the server.
 			quitRequest = new byte[] { MessageType.END_SESSION.getCode(), 0, 0 };
 			Network.sendMessage(socket, quitRequest);
 			socket.close();
@@ -368,6 +370,7 @@ public class ClientGameController
 			//ask to play again
 			break;
 		case TIE:
+			updateBoardDisplay(false, reply[1], reply[2]);
 			displayMessage = "The game has resulted in a Tie.";
 			System.out.println("handleReply() : Tie");
 			//Lock GUI
