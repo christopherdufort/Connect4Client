@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -100,7 +101,7 @@ public class ClientGameController
 					fixLabel();
 				}
 			}, 2000);
-		} 
+		}
 		
 		//If the user clicked on a valid column
 		else 
@@ -112,9 +113,20 @@ public class ClientGameController
 
 			byte[] move = new byte[] {MessageType.MOVE.getCode(), (byte) column, (byte) emptyRow };
 
-			//Sends message to server to tell it about the move
-			Network.sendMessage(socket, move);
-			handleReply();
+			try{
+				//Sends message to server to tell it about the move
+				Network.sendMessage(socket, move);
+				handleReply();
+			}catch(SocketException | SocketTimeoutException ste){
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Connect Four Network Error");
+				alert.setHeaderText("Connection Interupted");
+				alert.setContentText("A Network Error has occured, and the game is unable to continue, please contact your DataCommunication Administrator.");
+	
+				alert.showAndWait();
+				socket.close();
+				Platform.exit();
+			}
 		}
 	}
 
