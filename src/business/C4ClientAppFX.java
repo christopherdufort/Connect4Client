@@ -87,6 +87,7 @@ public class C4ClientAppFX extends Application {
 		// The Stage comes from the framework
 		// so make a copy to use elsewhere
 		this.primaryStage = primaryStage;
+		this.primaryStage.setResizable(false);
 
 		// Create the Scene and put it on the Stage
 		configureStage();
