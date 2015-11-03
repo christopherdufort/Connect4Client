@@ -35,7 +35,7 @@
          <children>
             <ImageView fitHeight="695.0" fitWidth="908.0" layoutX="163.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@b.png" />
+                  <Image url="@background.png" />
                </image>
             </ImageView>
             <GridPane layoutX="163.0" layoutY="28.0" prefHeight="681.0" prefWidth="910.0">
