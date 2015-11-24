@@ -36,6 +36,7 @@ import controller.ClientGameController;
  * @author Nader Baydoun
  * 
  * @since JDK 1.8
+ * @version 1.0.0 Now with Multithreaded server.
  */
 public class C4ClientAppFX extends Application {
 	// The primary window or frame of this application
